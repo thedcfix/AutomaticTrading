@@ -24,17 +24,14 @@ detecting the best configuration means finding 3 parameters: N, the length of th
 To evaluate a configuration (set of 3 parameters), the code exploits the simulator; it essentially applies the parameters and runs a paper simulation against the historical log. In the end it evaluates the final value of such configuration. The initial budget is set to 100. If the simulator reveals that the final BUDGET + PROFIT (profit is whatevere exceeds 100), I&#39;m gaining money with the configuration, otherwise I&#39;m loosing.
 
 To overcome the unfeasibility of the problem, this code uses a couple of heuristics. These heuristics do not simulate every single configuration but randomly generate points. Points represent a configuration in which N is fixed and the other 2 variables are randomly generated in a finite number, (eg. 100 points for every N).
-
- ![Alt text](Figure_1.png?raw=true)
-
 This kind of heuristic generates a function that gets plotted on a chart. By looking at the chart is then possible to see in which areas the funzioni s getting maximixed.
 
+![Alt text](Figure_1.png?raw=true)
 (The image shows how, for day 44, low values af N lead to higher values in the simulation)
 
 A second heuristics allows to better analyze those areas and come out with the best possible configuration.
 
  ![Alt text](Figure_2.png?raw=true)
-
 (In this case it&#39;s possible to see that for day 44 the configurations having the higher values have short ranging from 400 to 1800 while the values of long are centered around 200 or 600. In this case use the single\_solver to analyze a configuration fixing N to a certain value)
 
 **THE CODE:**
