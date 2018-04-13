@@ -9,6 +9,7 @@ import time
 Log = recordclass('Log', ['coin', 'value_ask', 'value_bid'])
 Function = recordclass('Function', ['seq', 'short', 'long', 'value'])
 
+# script used to discover in detail how a fixed sequence length evolves on the basis of the other two parameters
 
 AVG_LEN = 5000
 POINTS_PER_SEQ = 100
@@ -24,10 +25,11 @@ def run(seq, id):
 	print("Thread " + str(seq) + " partito")
 	
 	for i in range(1, POINTS_PER_SEQ):
+		# modify values
 		short = randint(675, 1400)
-		# forzo il fatto che long sia diverso da short
 		long = short
 		while (long == short):
+			# modify values
 			long = randint(600, 800)
 
 		value = simulate(seq, short, long, kmeans, ledger)
@@ -42,13 +44,12 @@ def run(seq, id):
 
 if __name__ == '__main__':
 
-	n_thread = 12;
-	#modificare anche qui
-	last_index = 25
+	n_thread = 11;
 	global_list = []
 	processes = []
 	
 	seq = 25
+	last_index = seq
 	
 	for p_number in range(n_thread):
 		p = Process(target=run, args=(seq, p_number))

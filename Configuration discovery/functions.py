@@ -1,8 +1,7 @@
-import pickle
-from recordclass import recordclass
-import sys
 import numpy
-from functions import genExtractor, getAvg, getFloatingAvg
+from sklearn.cluster import KMeans
+from recordclass import recordclass
+import pickle
 
 Log = recordclass('Log', ['coin', 'value_ask', 'value_bid'])
 
@@ -30,6 +29,50 @@ class SuperQueue:
 		
 # functions
 
+def getAvg(array):
+	sum = 0
+	
+	for el in array:
+		sum = sum + el
+		
+	return sum / len(array)
+	
+def getFloatingAvg(queue, len):
+	fibo = 0
+	sum = 0
+	size = len
+		
+	for k in queue.items:
+		fibo += size
+		sum += size * k
+		size -= 1
+		
+	return (sum / fibo)
+	
+def genExtractor(seq, ledger):
+	
+	SEQ_SIZE = seq
+		
+	data = []
+	samples = []
+
+	for log in ledger:
+		if log.coin == "XRP":
+			data.append(log.value_ask)
+		
+	for i in range(len(data) - SEQ_SIZE):
+		array = numpy.array(data[i : i + SEQ_SIZE])
+		avg = getAvg(array)
+		array = array / avg
+		array = array**(1/2)
+		samples.append(array)
+	
+	samples = numpy.array(samples)
+
+	kmeans = KMeans(n_clusters=3, random_state=0).fit(samples)
+
+	return kmeans
+	
 def simulate(seq, short, long, kmeans, ledger):
 
 	SEQ_SIZE = seq
@@ -101,9 +144,6 @@ def simulate(seq, short, long, kmeans, ledger):
 			array = array**(1/2)
 			res = kmeans.predict([array])[0]
 			
-			print(str(i) + "\t" + str(data_ask[i]) + "\t\t Trend: " + str(res) + "\t BUDGET: " + str(float("{0:.2f}".format(BUDGET))) + "\t" + str("up" if avg_short[-1] > avg_long[-1] else "down") 
-				+ "\t PROFIT: " + str(float("{0:.4f}".format(PROFIT))))
-			
 			if res == GAIN and avg_short[-1] > avg_long[-1]:
 				#compro
 				if COINS == 0:
@@ -123,17 +163,4 @@ def simulate(seq, short, long, kmeans, ledger):
 			
 			idx = idx + 1
 	
-	print("\n\nIl budget finale è: " + str(BUDGET) + " con " + str(COINS) + " monete")
-	print("Budget normalizzato: " + str(BUDGET + COINS * data_bid[-1]))
-	print("Profitto: " + str(PROFIT))
-	print("GAIN, LOSS & FLAT: " + str(GAIN) + " " + str(LOSS) + " " + str(FLAT))
-
-SEQ_SIZE = int(sys.argv[1])
-SHORT = int(sys.argv[2])
-LONG = int(sys.argv[3])
-
-with open('log_completo.dat', 'rb') as infile:
-	ledger = pickle.load(infile)
-
-kmeans = genExtractor(SEQ_SIZE, ledger)
-simulate(SEQ_SIZE, SHORT, LONG, kmeans, ledger)
+	return (BUDGET + COINS * data_bid[-1] + PROFIT)

@@ -3,7 +3,7 @@ from recordclass import recordclass
 import pickle
 from multiprocessing import Process
 
-# prende il log completo e per ogni singolo giorno vede quali sono le configurazioni migliori.
+# used to test the best configuration to see if they are valid also on the long period
 
 Log = recordclass('Log', ['coin', 'value_ask', 'value_bid'])
 Function = recordclass('Function', ['seq', 'short', 'long', 'value'])
@@ -12,6 +12,8 @@ def run(config, ledger, i, best):
 	print("Test configurazione " + str(i) + ": " + str(config))
 	kmeans = genExtractor(config.seq, ledger)
 	res = simulate(config.seq, config.short, config.long, kmeans, ledger)
+	
+	# keeping just the configurations with a value > 100
 	if (res > 100):
 		best.append(config)
 		print("\t ------> Configurazione ottima: " + str(config) + " value: " + str(res))
@@ -35,7 +37,7 @@ if __name__ == '__main__':
 		
 	print(str(len(values)) + " configurazioni trovate")
 
-	# trovo il massimo numero di thread da lanciare
+	# max number of threads
 	max = 11
 	dim = len(values)
 	
@@ -54,12 +56,3 @@ if __name__ == '__main__':
 		
 		for p in processes:
 			p.join()
-	
-# for config in values:
-	# print("Test configurazione " + str(i) + ": " + str(config))
-	# i += 1
-	# kmeans = genExtractor(config.seq, training)
-	# res = simulate(config.seq, config.short, config.long, kmeans, ledger)
-	# if (res > 100):
-		# best.append(config)
-		# print("\t ------> Configurazione ottima: " + str(res))
