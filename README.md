@@ -27,11 +27,13 @@ To overcome the unfeasibility of the problem, this code uses a couple of heurist
 This kind of heuristic generates a function that gets plotted on a chart. By looking at the chart is then possible to see in which areas the funzioni s getting maximixed.
 
 ![Alt text](Figure_1.png?raw=true)
+
 (The image shows how, for day 44, low values af N lead to higher values in the simulation)
 
 A second heuristics allows to better analyze those areas and come out with the best possible configuration.
 
  ![Alt text](Figure_2.png?raw=true)
+ 
 (In this case it&#39;s possible to see that for day 44 the configurations having the higher values have short ranging from 400 to 1800 while the values of long are centered around 200 or 600. In this case use the single\_solver to analyze a configuration fixing N to a certain value)
 
 **THE CODE:**
