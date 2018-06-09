@@ -137,24 +137,24 @@ for log in ledger:
 
 # ---------------
 
-SEQ = 34
-short = 865
-long = 590
+# SEQ = 34
+# short = 865
+# long = 590
 
-kmeans = genExtractor(SEQ, ledger)
-history = getProfitHistory(SEQ, short, long, kmeans, ledger)
+# kmeans = genExtractor(SEQ, ledger)
+# history = getProfitHistory(SEQ, short, long, kmeans, ledger)
 
 plt.figure("Trend analysis")
-plt.subplot(311)
+plt.subplot(211)
 plt.plot(stock, 'k', label="Stock")
 plt.plot(xes, mins, 'k', color="red", label="Trend");
 legend(framealpha=0.5)
-plt.subplot(312)
+plt.subplot(212)
 plt.plot(daily_avg, 'k', color="black", label="AVG_" + str("DAILY"))
 plt.plot(avg_five, 'k', color="blue", label="AVG_" + str("5"))
 plt.plot(avg_twenty, 'k--', color="blue", label="AVG_" + str("20"))
 legend(framealpha=0.5)
-plt.subplot(313)
-plt.plot(history, 'k', color="green", label="PROFIT_HISTORY")
-legend(framealpha=0.5)
+# plt.subplot(313)
+# plt.plot(history, 'k', color="green", label="PROFIT_HISTORY")
+# legend(framealpha=0.5)
 plt.show()

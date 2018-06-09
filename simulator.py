@@ -83,6 +83,17 @@ def simulate(seq, short, long, kmeans, ledger):
 	FLAT = kmeans.predict([numpy.array(flat_array[:SEQ_SIZE])])[0]
 
 	idx = 0
+	daily_avg = []
+	counter = 0
+	days = 0
+	sum = 0
+	avg = 0
+	# un record ogni 45 secondi per 24 ore
+	DAILY_RECORDS = 24 * 3600 / 45
+	avg_five = []
+	avg_twenty = []
+	els = SuperQueue(5)
+	elss = SuperQueue(20)
 
 	for i in range(len(data_ask) - 2):
 
@@ -102,11 +113,11 @@ def simulate(seq, short, long, kmeans, ledger):
 			res = kmeans.predict([array])[0]
 			
 			print(str(i) + "\t" + str(data_ask[i]) + "\t\t Trend: " + str(res) + "\t BUDGET: " + str(float("{0:.2f}".format(BUDGET))) + "\t" + str("up" if avg_short[-1] > avg_long[-1] else "down") 
-				+ "\t PROFIT: " + str(float("{0:.4f}".format(PROFIT))))
+					+ "\t PROFIT: " + str(float("{0:.4f}".format(PROFIT))))
 			
-			if res == GAIN and avg_short[-1] > avg_long[-1]:
+			if res == GAIN and avg_short[-1] > avg_long[-1] and (len(avg_five) > 0 and  len(avg_twenty) > 0):
 				# buying
-				if COINS == 0:
+				if COINS == 0 and avg_five[-1] > avg_twenty[-1]:
 					num_coins = int((BUDGET - BUDGET * FEE) / data_ask[i] - 0.5)
 					BUDGET = BUDGET - num_coins * (data_ask[i] + data_ask[i + 1]) / 2 - (data_ask[i] + data_ask[i + 1]) / 2 * FEE
 					COINS = num_coins
@@ -122,6 +133,22 @@ def simulate(seq, short, long, kmeans, ledger):
 					COINS = 0
 			
 			idx = idx + 1
+			
+		sum += data_ask[i]
+		counter += 1
+		avg = sum / counter
+		
+		if (counter == DAILY_RECORDS):
+			sum /= DAILY_RECORDS
+			daily_avg.append(sum)
+			sum = 0
+			counter = 0
+			
+			for av in daily_avg:
+				els.put(av)
+				elss.put(av)
+			avg_five.append(getFloatingAvg(els, 5))
+			avg_twenty.append(getFloatingAvg(elss, 20))
 	
 	print("\n\nIl budget finale è: " + str(BUDGET) + " con " + str(COINS) + " monete")
 	print("Budget normalizzato: " + str(BUDGET + COINS * data_bid[-1]))
