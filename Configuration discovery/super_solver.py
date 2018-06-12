@@ -10,9 +10,9 @@ Log = recordclass('Log', ['coin', 'value_ask', 'value_bid'])
 Function = recordclass('Function', ['seq', 'short', 'long', 'value'])
 
 # maximum sequence length
-SEQ_LEN = 40
+SEQ_LEN = 60
 AVG_LEN = 1920
-POINTS_PER_SEQ = 100
+POINTS_PER_SEQ = 50
 				
 def run(seq):
 	
@@ -35,7 +35,7 @@ def run(seq):
 		print("Num: " + str(i) + "\t" + "Seq: " + str(seq) + "\t" + "Short: " + str(short) + "\t" + "Long: " + str(long) + "\t" + "Value: " + str(float("{0:.2f}".format(value))))
 		
 		# just keep configurations with value above 100
-		if (value > 100):
+		if (value > 90):
 			functionLog.append(Function(seq, short, long, value))
 			
 		with open('function' + str(seq) + '.dat', 'wb') as outfile:
@@ -50,7 +50,7 @@ if __name__ == '__main__':
 	processes = []
 	
 	# fisrt sequence length
-	seq = 2
+	seq = 30
 	last_index = seq;
 	
 	while seq <= SEQ_LEN:
