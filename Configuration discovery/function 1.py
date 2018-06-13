@@ -28,7 +28,5 @@ short = np.array(short)
 long = np.array(long)
 value = np.array(value)
 
-#ax.scatter(short, long, value, c=value)
 ax.scatter(seq, short, value, c=value)
-#ax.plot_trisurf(seq, short, value, cmap='viridis', edgecolor='none');
 plt.show()

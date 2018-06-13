@@ -73,7 +73,7 @@ def genExtractor(seq, ledger):
 
 	return kmeans
 	
-def simulate(seq, short, long, kmeans, ledger):
+def simulate(seq, short, long, kmeans, ledger, flag):
 
 	SEQ_SIZE = seq
 	SHORT_AVG = short
@@ -126,6 +126,7 @@ def simulate(seq, short, long, kmeans, ledger):
 	FLAT = kmeans.predict([numpy.array(flat_array[:SEQ_SIZE])])[0]
 
 	idx = 0
+	history = []
 
 	for i in range(len(data_ask) - 2):
 
@@ -143,6 +144,10 @@ def simulate(seq, short, long, kmeans, ledger):
 			array = array / getAvg(array)
 			array = array**(1/2)
 			res = kmeans.predict([array])[0]
+			
+			if flag == 1:
+				print(str(i) + "\t" + str(data_ask[i]) + "\t\t Trend: " + str(res) + "\t BUDGET: " + str(float("{0:.2f}".format(BUDGET))) + "\t" + str("up" if avg_short[-1] > avg_long[-1] else "down") 
+						+ "\t PROFIT: " + str(float("{0:.4f}".format(PROFIT))))
 			
 			if res == GAIN and avg_short[-1] > avg_long[-1]:
 				#compro
@@ -162,5 +167,10 @@ def simulate(seq, short, long, kmeans, ledger):
 					COINS = 0
 			
 			idx = idx + 1
+			
+		history.append(BUDGET + COINS * data_bid[i] + PROFIT);
 	
-	return (BUDGET + COINS * data_bid[-1] + PROFIT)
+	if flag == 1:
+		return (BUDGET + COINS * data_bid[-1] + PROFIT, history, COINS)
+	else:
+		return (BUDGET + COINS * data_bid[-1] + PROFIT)

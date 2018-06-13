@@ -31,11 +31,11 @@ def run(seq):
 		while (long == short):
 			long = randint(1, AVG_LEN)
 
-		value = simulate(seq, short, long, kmeans, ledger)
+		value = simulate(seq, short, long, kmeans, ledger, 0)
 		print("Num: " + str(i) + "\t" + "Seq: " + str(seq) + "\t" + "Short: " + str(short) + "\t" + "Long: " + str(long) + "\t" + "Value: " + str(float("{0:.2f}".format(value))))
 		
-		# just keep configurations with value above 100
-		if (value > 90):
+		# just keep configurations with value above X
+		if (value > 100):
 			functionLog.append(Function(seq, short, long, value))
 			
 		with open('function' + str(seq) + '.dat', 'wb') as outfile:
@@ -50,7 +50,7 @@ if __name__ == '__main__':
 	processes = []
 	
 	# fisrt sequence length
-	seq = 30
+	seq = 36
 	last_index = seq;
 	
 	while seq <= SEQ_LEN:

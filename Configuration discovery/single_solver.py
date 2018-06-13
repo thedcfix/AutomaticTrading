@@ -12,12 +12,12 @@ Function = recordclass('Function', ['seq', 'short', 'long', 'value'])
 # script used to discover in detail how a fixed sequence length evolves on the basis of the other two parameters
 
 AVG_LEN = 5000
-POINTS_PER_SEQ = 100
+POINTS_PER_SEQ = 50
 				
 def run(seq, id):
 	
 	with open('log.dat', 'rb') as infile:
-                ledger = pickle.load(infile)
+		ledger = pickle.load(infile)
 		
 	kmeans = genExtractor(seq, ledger)
 	functionLog = []
@@ -25,14 +25,14 @@ def run(seq, id):
 	print("Thread " + str(seq) + " partito")
 	
 	for i in range(1, POINTS_PER_SEQ):
-		# modify values
+		# modify values. INSERT HERE !!!!!!
 		short = randint(675, 1400)
 		long = short
 		while (long == short):
-			# modify values
+			# modify values. INSERT HERE !!!!!!
 			long = randint(600, 800)
 
-		value = simulate(seq, short, long, kmeans, ledger)
+		value = simulate(seq, short, long, kmeans, ledger, 0)
 		print("Num: " + str(i) + "\t" + "Seq: " + str(seq) + "\t" + "Short: " + str(short) + "\t" + "Long: " + str(long) + "\t" + "Value: " + str(float("{0:.2f}".format(value))))
 					
 		functionLog.append(Function(seq, short, long, value))
@@ -48,6 +48,7 @@ if __name__ == '__main__':
 	global_list = []
 	processes = []
 	
+	# insert sequence to inspect HERE !!!!!!
 	seq = 25
 	last_index = seq
 	
