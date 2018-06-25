@@ -50,7 +50,7 @@ if __name__ == '__main__':
 	processes = []
 	
 	# fisrt sequence length
-	seq = 36
+	seq = 30
 	last_index = seq;
 	
 	while seq <= SEQ_LEN:
