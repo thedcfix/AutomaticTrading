@@ -2,16 +2,14 @@
 
 **GOAL** :
 
-the goal of the project is to see if it&#39;s possible to create a trading bot capable of autonomously buying/selling every kind of cryptocurrency/stock/other in an automatic way. The idea is to use a mixed approach comprising classical technical analysis (moving averages) and a new intuition of mine, inspired by how SAGE (Serial Analysis of Gene Expression) works and involving machine learnig; the idea is to detect the right time to buy or sell a title.
+The goal of the project is to see if it&#39;s possible to create a trading bot capable of autonomously buying/selling every kind of stock in an automatic way. The idea is to use a mixed approach comprising classical technical analysis (moving averages) and a new intuition of mine, inspired by how SAGE (Serial Analysis of Gene Expression) works and involving machine learnig; the idea is to detect the right time to buy or sell a title.
 
 **HOW IT WORKS** :
 
 As said, the final result is the combination of two approaches:
 
 1. **MACHINE LEARNIG** : given a series of values, the algorithm takes into accout every possible sequence of  length N.
-
 (es: series = 1,2,3,4,5,6 and N = 4 ----> (1,2,3,4 ; 2,3,4,5 ; 3,4,5,6))
-
 All of these sequences are then normalized by simply dividing them by their average value in order to have them comparable sequences centered around 1.
 Done this, the generated sequences of length N are used as a input to generate a K-Means Clustering model having 3 clusters. One for the ascending sequences (GAIN), one for the descending ones (LOSS) and the last for the stable ones (FLAT). The precision in identifying trends in very high using this technique.
 
@@ -19,7 +17,7 @@ Done this, the generated sequences of length N are used as a input to generate a
 
 **THE PROBLEM:**
 
-detecting the best configuration means finding 3 parameters: N, the length of the short moving average and the length of the long moving average. Being a parameters discovery problem, time complexity becomes O(n^3).
+Detecting the best configuration means finding 3 parameters: N, the length of the short moving average and the length of the long moving average. Being a parameters discovery problem, time complexity becomes O(n^3).
 
 To evaluate a configuration (set of 3 parameters), the code exploits the simulator; it essentially applies the parameters and runs a paper simulation against the historical log (log_completo.dat). In the end it evaluates the final value (BUDGET + PROFIT) of such configuration. The initial budget is set to 100. If the simulator reveals that the final BUDGET + PROFIT (profit is whatevere exceeds 100), I&#39;m gaining money with the configuration, otherwise I&#39;m loosing.
 
@@ -42,20 +40,17 @@ All of the code makes use af a log containing the values sampled every X seconds
 
 Log = recordclass(&#39;Log&#39;, [&#39;coin&#39;, &#39;value\_ask&#39;, &#39;value\_bid&#39;])
 
-Having coin as a string and the othe two values as floating point numbers.
+Having coin as a string (may be 'dollars', 'euros' etc.) and the othe two values as floating point numbers.
 
-log\_completo.dat contains the history of the title from when it started to sampled while log.dat can contain a subset of that time window.
-
-In general you may want to train your model on a subset of the whole history and then test it one the entire period.
+log\.dat contains the history of the title
 
 - **Functions** : contains functions used by the scripts
 - **Simulator** : accepts 3 parameters: N short long and shows you how the situation evolves in time by doing a paper simulation using your configuration
-- **Chart** : shows you the trend of your data
-- **Daily** \_log: allows you to extract the data of a certain day. Call it passing the dai as a parameter. It generates a log.dat you can use to make experiments.
-- **Function**** 1**: show you the relation between N and short (long in hidden). Is useful to visualize the best configurations and their value.
-- **Function**** 2**: use it to expand the details about a configuration on the plane short-long and the corresponding value.
+- **Chart** : shows you the trend of your data and the profit history based on the last configuration that has been simulated
+- **Function 1**: shows you the relation between N and short (long in hidden). Is useful to visualize the best configurations and their value.
+- **Function 2**: use it to expand the details about a configuration on the plane short-long and the corresponding value.
 - **Super\_solver** : it&#39;s the heuristic that generates the points
 - **Single\_solver** : use it to see how configurations evolve when N is fixed
-- **Yea** : use it to validate your model. See if the configurations you tested on log.dat are also valid on the full log\_completo.dat.
 
 The bot itself is not provided. Just use these algorithms to build yours. I personally use a Telegram Bot to control the interactions with the bot and send commands. Codify your actions directly in your script (make it resilient to crashes and unexpected inputs).
+Once you find the best configuration (i.e. the one maximising the profit) build a live simulator to test the model before using it. The data collection process should be no shorter than 3 months to start giving acceptable results.
