@@ -53,4 +53,4 @@ log\.dat contains the history of the title
 - **Single\_solver** : use it to see how configurations evolve when N is fixed
 
 The bot itself is not provided. Just use these algorithms to build yours. I personally use a Telegram Bot to control the interactions with the bot and send commands. Codify your actions directly in your script (make it resilient to crashes and unexpected inputs).
-Once you find the best configuration (i.e. the one maximising the profit) build a live simulator to test the model before using it. The data collection process should be no shorter than 3 months to start giving acceptable results.
+Once you find the best configuration (i.e. the one maximizing the profit) build a live simulator to test the model before using it. The data collection process should be no shorter than 3 months to start giving acceptable results.
