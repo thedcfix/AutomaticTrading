@@ -54,6 +54,6 @@ log\.dat contains the history of the title
 
 The bot itself is not provided. Just use these algorithms to build yours. I personally use a Telegram Bot to control the interactions with the bot and send commands. Codify your actions directly in your script (make it resilient to crashes and unexpected inputs).
 Once you find the best configuration (i.e. the one maximizing the profit) build a live simulator to test the model before using it. The data collection process should be no shorter than 3 months to start giving acceptable results.
-Here below you can see a simulation over a period of about 3 months. Profit grows of rising edges and moderat while losses are modest even in presence of bearish trends.
+Here below you can see a simulation over a period of about 3 months. Profit grows on rising edges and moderat while losses are modest even in presence of bearish trends.
 
 ![Alt text](Figure_3.png?raw=true)
