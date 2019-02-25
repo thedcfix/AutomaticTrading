@@ -29,4 +29,6 @@ long = np.array(long)
 value = np.array(value)
 
 ax.scatter(seq, short, value, c=value)
+plt.xlabel('Sequence length')
+plt.ylabel('Short moving avg')
 plt.show()

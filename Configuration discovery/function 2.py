@@ -29,4 +29,6 @@ long = np.array(long)
 value = np.array(value)
 
 ax.scatter(short, long, value, c=value)
+plt.xlabel('Short avg')
+plt.ylabel('Long avg')
 plt.show()
