@@ -86,5 +86,5 @@ if __name__ == '__main__':
 		config = pickle.load(configFile)
 		configFile.close()
 		
-		bot = telepot.Bot("467920869:AAF9JHOTFqOyCzyHa8yQ-DYRT9sQvztyfSg")
-		bot.sendDocument(config.id, infile)
+		# bot = telepot.Bot("put token here")
+		# bot.sendDocument(config.id, infile)
